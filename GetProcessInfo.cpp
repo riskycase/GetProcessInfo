@@ -2,7 +2,6 @@
 #include <windows.h>
 #include <tlhelp32.h>
 #include <tchar.h>
-#include "atlstr.h"
 
 int GetProcessID(const TCHAR* const executableName) {
     PROCESSENTRY32 entry;
@@ -37,17 +36,17 @@ time_t GetStartTime(int pid) {
     return (time_t)(total_us / 1000000);
 }
 
-int main(int argc, char* argv[])
+int _tmain(int argc, _TCHAR* argv[])
 {
     if (argc > 1) {
-        USES_CONVERSION;
-        TCHAR* processName = A2T(argv[1]);
-        int pid = GetProcessID(processName);
-        if (-1 == pid) {
-            std::cout << -1 << std::endl << -1;
-        }
-        else {
-            std::cout << pid << std::endl << GetStartTime(pid);
+        for (int i = 1; i < argc; i++) {
+            int pid = GetProcessID(argv[i]);
+            if (-1 == pid) {
+                std::cout << -1 << ":" << -1 << std::endl;
+            }
+            else {
+                std::cout << pid << ":" << GetStartTime(pid) << std::endl;
+            }
         }
     }
     return 0;
